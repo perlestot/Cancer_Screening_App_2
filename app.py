@@ -151,7 +151,7 @@ def result():
             text_output = "0"
 
               
-    return str(X_new) #text_output
+    return text_output
 
 if __name__ == '__main__':
     """Connect to Server"""
