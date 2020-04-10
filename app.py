@@ -9,8 +9,8 @@ Created on Fri Feb 28 19:57:40 2020
 import numpy as np
 import flask
 import pickle
-import tensorflow as tf
-from tensorflow import keras
+# import tensorflow as tf
+# from tensorflow import keras
 
 # app
 app = flask.Flask(__name__)
