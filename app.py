@@ -29,37 +29,6 @@ def home():
            </form>
            """
 
-@app.route("/predict", methods=["GET"])
-def predict():
-    thal = flask.request.args["thal"]
-    cp = flask.request.args["cp"]
-    slope = flask.request.args["slope"]
-    exang = flask.request.args["exang"]
-    ca = flask.request.args["ca"]
-    
-    fmap = {"normal": [1, 0, 0],
-            "fixed defect": [0, 1, 0],
-            "reversable defect": [0, 0, 1],
-            "typical angina": [1, 0, 0, 0],
-            "atypical angina": [0, 1, 0, 0],
-            "non anginal pain": [0, 0, 1, 0],
-            "asymptomatic": [0, 0, 0, 1],
-            "upsloping": [1, 0, 0],
-            "flat": [0, 1, 0],
-            "downsloping": [0, 0, 1]}
-    
-    # X_new = fmap[thal] + fmap[cp] + fmap[slope]
-    
-    X_new = np.array(fmap[thal] + fmap[cp] + fmap[slope] + [int(exang)] + [int(ca)]).reshape(1, -1)
-    yhat = heart.predict(X_new)
-    if yhat[0] == 1:
-        outcome = "heart disease"
-    else:
-        outcome = "normal"
-    prob = heart.predict_proba(X_new)
-    
-    return "This patient is diagnosed as " + outcome + " with probability " + str(round(prob[0][1], 2))
-
 @app.route("/page_Demographic")
 def page_Demographic():
    with open("page_Demographic.html", 'r') as viz_file:
