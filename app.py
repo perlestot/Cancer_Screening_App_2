@@ -138,20 +138,20 @@ def result():
     X_new = X_new.astype(int)
     Class_label = ['Breast', 'Cervical', 'Colorectal', 'Liver', 'Lung']
     # with graph.as_default():
-    y_predict_val = NN_Cancer_Model.predict(X_new)
+    # y_predict_val = NN_Cancer_Model.predict(X_new)
 
-    y_predict_prob = list(map(lambda x: round(x,3),y_predict_val[0]))
-    cancer_over_threshold = []
-    for prob,class_name in zip(y_predict_prob,Class_label):
-        if prob > 0.5:
-            cancer_over_threshold.append(class_name)
-        if len(cancer_over_threshold):
-            text_output = "1"
-        else:
-            text_output = "0"
+    # y_predict_prob = list(map(lambda x: round(x,3),y_predict_val[0]))
+    # cancer_over_threshold = []
+    # for prob,class_name in zip(y_predict_prob,Class_label):
+    #     if prob > 0.5:
+    #         cancer_over_threshold.append(class_name)
+    #     if len(cancer_over_threshold):
+    #         text_output = "1"
+    #     else:
+    #         text_output = "0"
 
               
-    return text_output
+    return str(X_new) #text_output
 
 if __name__ == '__main__':
     """Connect to Server"""
