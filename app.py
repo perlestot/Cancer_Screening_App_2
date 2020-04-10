@@ -9,17 +9,13 @@ Created on Fri Feb 28 19:57:40 2020
 import numpy as np
 import flask
 import pickle
-# import tensorflow as tf
-# from tensorflow import keras
+from sklearn.linear_model import LogisticRegression
 
 # app
 app = flask.Flask(__name__)
 
 # load model
-NN_Cancer_Model = pickle.load(open("NN_Cancer_Screen.pkl","rb"))
-# global graph
-# graph = tf.get_default_graph()
-# NN_Cancer_Model._make_predict_function()
+LogReg_clf = pickle.load(open("LogReg_Cancer_Screen.pkl","rb"))
 
 # routes
 @app.route("/")
@@ -136,25 +132,22 @@ def result():
                  Lung_1 +Lung_2 +Lung_3).reshape(1, -1)
 
     X_new = X_new.astype(int)
-    Class_label = ['Breast', 'Cervical', 'Colorectal', 'Liver', 'Lung']
-    # with graph.as_default():
-    # y_predict_val = NN_Cancer_Model.predict(X_new)
-
-    # y_predict_prob = list(map(lambda x: round(x,3),y_predict_val[0]))
-    # cancer_over_threshold = []
-    # for prob,class_name in zip(y_predict_prob,Class_label):
-    #     if prob > 0.5:
-    #         cancer_over_threshold.append(class_name)
-    #     if len(cancer_over_threshold):
-    #         text_output = "1"
-    #     else:
-    #         text_output = "0"
+    y_predict_prob = LogReg_clf.predict_proba(X_new).ravel()
+    Class_label = LogReg_clf.classes_
+    cancer_over_threshold = []
+    for prob,class_name in zip(y_predict_prob,Class_label):
+        if prob > 0.5:
+            cancer_over_threshold.append(class_name)
+    if len(cancer_over_threshold):
+        text_output = "You have a risk of", *cancer_over_threshold, 'cancer \nWe suggest consulting a doctor immediately.'
+    else:
+        text_output = "Congratulations, you are not at risk of getting cancer in Top 5 Cancer."
 
               
-    return str(X_new) #text_output
+    return text_output
 
 if __name__ == '__main__':
     """Connect to Server"""
     HOST = "127.0.0.1"
     PORT = "4000"
-    app.run(HOST, PORT, debug=False)
+    app.run(HOST, PORT, debug=True)
