@@ -7,6 +7,7 @@ Created on Fri Feb 28 19:57:40 2020
 """
 
 import numpy as np
+import pandas as pd
 import flask
 import pickle
 import NICE
