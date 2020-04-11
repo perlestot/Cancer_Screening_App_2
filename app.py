@@ -9,6 +9,7 @@ Created on Fri Feb 28 19:57:40 2020
 import numpy as np
 import flask
 import pickle
+import NICE
 from sklearn.linear_model import LogisticRegression
 
 # app
@@ -75,32 +76,32 @@ def result():
         Dyspnea = [int(inputs["Dyspnea"])]
         Amber_Urine = [int(inputs["Amber_Urine"])]
         Paresis = [int(inputs["Paresis"])]
-
-
         unk_CC = [0]
-        Breast_0 = [0]
-        Breast_1 = [0]
-        Breast_2 = [0]
-        GI_Upper_1 = [0]
-        GI_Upper_2 = [0]
-        GI_Liver_1 = [0]
-        GI_Colorectal_1 = [0]
-        GI_Colorectal_2 = [0]
-        GI_Colorectal_3 = [0]
-        Gynae_Cervical_1 = [0]
-        Lung_1 = [0]
-        Lung_2 = [0]
-        Lung_3 = [0]
+
     
     X_new = np.array(AGEDIAG +isMale +Fever +N_V +Cough +Anorexia +Chest_Pain +Fatigue +Diarrhea +Constipation +\
                  Occult_Blood_Faeces +Abdominal_Pain +Back_Pain +Abnormal_Vaginal_Bleeding +Lump +\
                  Breast_Skin_Change +Discharge +Hematuria +Dysuria +Hoarseness +Dysphagia +Hemoptysis +\
                  Headache +Dizziness +Hip_Pain +Peri_anal_Symptoms +Breast_Pain +Jaundice +Dyspnea +\
-                 Amber_Urine +Paresis +unk_CC +Breast_0 +Breast_1 +Breast_2 +GI_Upper_1 +GI_Upper_2 +\
-                 GI_Liver_1 +GI_Colorectal_1 +GI_Colorectal_2 +GI_Colorectal_3 +Gynae_Cervical_1 +\
-                 Lung_1 +Lung_2 +Lung_3).reshape(1, -1)
+                 Amber_Urine +Paresis +unk_CC).reshape(1, -1)
 
-    X_new = X_new.astype(int)
+    sel_fea = ['AGEDIAG', 'isMale', 'Fever', 'N_V', 'Cough', 'Anorexia', 'Chest_Pain', 'Fatigue', 'Diarrhea', 
+    'Constipation', 'Occult_Blood_Faeces', 'Abdominal_Pain', 'Back_Pain', 'Abnormal_Vaginal_Bleeding', 'Lump', 
+    'Breast_Skin_Change', 'Discharge', 'Hematuria', 'Dysuria', 'Hoarseness', 'Dysphagia', 'Hemoptysis', 'Headache', 
+    'Dizziness', 'Hip_Pain', 'Peri_anal_Symptoms', 'Breast_Pain', 'Jaundice', 'Dyspnea', 'Amber_Urine', 'Paresis', 'unk_CC', 
+    'Breast_0', 'Breast_1', 'Breast_2', 'GI_Upper_1', 'GI_Upper_2', 'GI_Liver_1', 'GI_Colorectal_1', 'GI_Colorectal_2', 
+    'GI_Colorectal_3', 'Gynae_Cervical_1', 'Lung_1', 'Lung_2', 'Lung_3']
+
+    X_new = pd.DataFrame(X_new,columns=sel_fea[:32])
+    
+    NICE_Feature_list = sel_fea[32:]
+    NICE_Fea_Func = [NICE.Breast_0,NICE.Breast_1,NICE.Breast_2,NICE.GI_Upper_1,NICE.GI_Upper_2,NICE.GI_Liver_1,
+             NICE.GI_Colorectal_1,NICE.GI_Colorectal_2,NICE.GI_Colorectal_3,NICE.Gynae_Cervical_1,
+             NICE.Lung_1,NICE.Lung_2,NICE.Lung_3]
+
+    for NICE_Func_Name, NICE_Func in zip(NICE_Feature_list,NICE_Fea_Func):
+        X_new[NICE_Func_Name] = X_new.apply(NICE_Func,axis='columns')
+
     y_predict_prob = LogReg_clf.predict_proba(X_new).ravel()
     Class_label = LogReg_clf.classes_
     cancer_over_threshold = []
