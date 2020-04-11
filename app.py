@@ -108,7 +108,7 @@ def result():
         if prob > 0.6:
             cancer_over_threshold.append(class_name)
     if len(cancer_over_threshold):
-        text_output = "You have a risk of", *cancer_over_threshold, 'cancer \nWe suggest consulting a doctor immediately.'
+        text_output = "You have a risk of", *cancer_over_threshold, 'cancer. \n\nWe suggest consulting a doctor immediately.'
         return ' '.join(text_output)
     else:
         text_output = "Congratulations, you are not at risk of getting cancer in Top 5 Cancer."
