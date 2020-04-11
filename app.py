@@ -105,7 +105,7 @@ def result():
     Class_label = LogReg_clf.classes_
     cancer_over_threshold = []
     for prob,class_name in zip(y_predict_prob,Class_label):
-        if prob > 0.5:
+        if prob > 0.6:
             cancer_over_threshold.append(class_name)
     if len(cancer_over_threshold):
         text_output = "You have a risk of", *cancer_over_threshold, 'cancer \nWe suggest consulting a doctor immediately.'
@@ -113,10 +113,10 @@ def result():
         text_output = "Congratulations, you are not at risk of getting cancer in Top 5 Cancer."
 
               
-    return text_output
+    return ' '.join(text_output)
 
 if __name__ == '__main__':
     """Connect to Server"""
     HOST = "127.0.0.1"
     PORT = "4000"
-    app.run(HOST, PORT, debug=False)
+    app.run(HOST, PORT, debug=True)
