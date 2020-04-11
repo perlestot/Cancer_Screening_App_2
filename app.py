@@ -24,7 +24,7 @@ def home():
            <body> 
            <h1 align=center>Cancer Screening by Invitrace (Well Project)<h1>
            </body>
-           <form action="http://localhost:4000/page_CC"">
+           <form action="https://cancer-screening-app-2.herokuapp.com/page_CC"">
            <input type="submit" value="Get Start!!" style="margin:0px auto; display:block;"/>
            </form>
            """

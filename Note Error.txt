@@ -1,0 +1,5 @@
+หาก deploy แล้ว เกิด application error ให้ลอง วิธีดังต่อไปนี้
+- ให้แน่ใจว่า ใน requirement.txt มี package ที่ต้องใช้ ครบจริงๆ แนะนำว่าให้ สร้าง env ใหม่ แล้วใช้ pip freeze > requirements.txt เพื่อความชัวร์
+- อย่าลืมใส่ package 2 ตัวนี้เข้าไปใน requirements.txt  ด้วย
+Flask==1.1.1
+gunicorn==20.0.4
